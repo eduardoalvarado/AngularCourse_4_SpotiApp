@@ -18,8 +18,7 @@ export class SearchComponent {
     if(this.termino.length == 0){
       return;
     }
-    this._spotify.getArtists(this.termino).subscribe(resp => {
-    });
+    this._spotify.getArtists(this.termino).subscribe();
   }
 
 }

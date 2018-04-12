@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import {SpotifyService} from '../../services/spotify.service';
+import { SpotifyService } from '../../services/spotify.service';
 
 
 @Component({
@@ -10,13 +10,27 @@ import {SpotifyService} from '../../services/spotify.service';
 })
 export class ArtistComponent implements OnInit {
 
-  constructor(private activatedRoute: ActivatedRoute, private _spotify: SpotifyService) { }
+  aratista: any = {};
+
+  constructor(private activatedRoute: ActivatedRoute, public _spotify: SpotifyService) { }
 
   ngOnInit() {
-    this.activatedRoute.params.map( params => params['id'])
-                              .subscribe(id => {
-      console.log(id);
-    });
+    this.activatedRoute.params
+                        .map( params => params['id'])
+                        .subscribe(id => {
+                          //console.log(id);
+                          this._spotify.getArtist( id )
+                                       .subscribe( artist => {
+                            this.aratista = artist;
+                          });
+
+                          this._spotify.getTop( id )
+                                       .map( (resp: any) => resp.tracks)
+                                       .subscribe( pistas => {
+                            console.log( pistas );
+                          });
+
+                        });
   }
 
 }
